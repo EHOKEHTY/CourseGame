@@ -1,8 +1,8 @@
 <img src="..."/>
 
-<img align="left" width="0" height="192px" hspace="10"/>
+<...>
 
-> ![Typing SVG](https://readme-typing-svg.herokuapp.com?size=30&font=Oldenburg&color=F7E62AFF&lines=Mergening+the+future)
+> ![Typing SVG](...)
 > 
 > «Розробка 2D гри в жанрі ARPG» 
 > 

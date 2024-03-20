@@ -1,0 +1,4 @@
+repository "CourseGame@jenya2003a@cloud"
+  path "/"
+    br "/main"
+    co "/main"

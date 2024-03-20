@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4cea3bd64dbf5da42885db8723af43f8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _hero: {instanceID: 0}
+  - _emptyHealth: {fileID: 500463735, guid: 27e1e13ec848f6d499122999f0ed6baa, type: 3}
+  - _fullHealth: {fileID: 786254504, guid: 27e1e13ec848f6d499122999f0ed6baa, type: 3}
+  - _emptyStamina: {fileID: -921493046, guid: 35b0fba115142304fb21e0da91edeefc, type: 3}
+  - _fullStamina: {fileID: -1419331783, guid: 35b0fba115142304fb21e0da91edeefc, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

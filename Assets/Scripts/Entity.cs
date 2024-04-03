@@ -6,13 +6,10 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float Speed = 3.0f;
     [SerializeField] protected float RunSpeed = 5.0f;
     [SerializeField] internal int HP = 100;
+    [SerializeField] internal float Stamina = 100;
     [SerializeField] internal int MaxHP = 100;
+    [SerializeField] internal int MaxStamina = 100;
 
-
-    void Start()
-    {
-    
-    }
 
     protected virtual void Walk(Vector3 moveTarget)
     {
@@ -26,22 +23,50 @@ public class Entity : MonoBehaviour
 
     internal void Damage(int damage)
     {
-        HP = HP - damage;
-        if (HP == 0)
+        if (HP - damage > 0)
         {
+            HP = HP - damage;
+        }
+        else
+        {
+            HP = 0;
             // DEATH
         }
     }
 
     internal void Heal(int healPoints)
     {
-        if (HP+healPoints > MaxHP)
+        if (HP + healPoints > MaxHP)
         {
             HP = MaxHP;
         }
         else
         {
             HP += healPoints;
+        }
+    }
+
+    internal void StaminaOff(float staminaPoints)
+    {
+        if (Stamina - staminaPoints > 0)
+        {
+            Stamina -= staminaPoints;
+        }
+        else
+        {
+            Stamina = 0;
+        }
+    }
+
+    internal void StaminaRestore(float staminaPoints)
+    {
+        if (Stamina + staminaPoints > MaxStamina)
+        {
+            Stamina = MaxStamina;
+        }
+        else
+        {
+            Stamina += staminaPoints;
         }
     }
 

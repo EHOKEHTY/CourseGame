@@ -19,13 +19,32 @@ public class HeroBar : MonoBehaviour
     [SerializeField] private Image _icon;
     [SerializeField] private Sprite[] _iconStates;
 
-    [Header("Lives")]
+    [Header("Scales")]
     [SerializeField] private Image[] _lives;
+    [SerializeField] private Image[] _stamina;
+
+    public void StaminaUpdate()
+    {
+        for (int i = 0, j = 0; i < _hero.MaxStamina; i++)
+        {
+            if (i < _hero.Stamina)
+            {
+                _stamina[j].sprite = _fullStamina;
+
+            }
+            else
+            {
+                _stamina[j].sprite = _emptyStamina;
+            }
+            if ((i + 1) * 10 >= (_hero.MaxStamina * (j + 1)))
+            {
+                j++;
+            }
+        }
+    }
 
     public void HealthUpdate()
     {
-
-
         for (int i = 0, j = 0; i < _hero.MaxHP; i++)
         {
             if (i < _hero.HP)
@@ -45,7 +64,7 @@ public class HeroBar : MonoBehaviour
         UpdateHealthIcon();
     }
 
-    private void UpdateHealthIcon()
+     private void UpdateHealthIcon()
     {
         if (_hero.HP <= 0)
         {
@@ -60,5 +79,6 @@ public class HeroBar : MonoBehaviour
             _icon.sprite = _iconStates[iconIndex];
         }
     }
+
 
 }

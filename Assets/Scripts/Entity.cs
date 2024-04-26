@@ -1,10 +1,16 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    [Header("Player Movement Settings")]
+    [Header("Entity Movement Settings")]
     [SerializeField] protected float Speed = 3.0f;
     [SerializeField] protected float RunSpeed = 5.0f;
+    [SerializeField] protected float StaminaRestoreDelay = 10.0f;
+    private float Timer = 10.0f;
+    Time t = new Time();
+
+    [Header("Entity Stats Settings")]
     [SerializeField] internal int HP = 100;
     [SerializeField] internal float Stamina = 100;
     [SerializeField] internal int MaxHP = 100;
@@ -19,6 +25,7 @@ public class Entity : MonoBehaviour
     protected virtual void Run(Vector3 moveTarget)
     {
         transform.position = Vector3.MoveTowards(transform.position, moveTarget, Time.deltaTime * RunSpeed);
+        Debug.Log(t.ToString());
     }
 
     internal void Damage(int damage)
@@ -30,7 +37,7 @@ public class Entity : MonoBehaviour
         else
         {
             HP = 0;
-            // DEATH
+            Destroy(this.gameObject);
         }
     }
 
@@ -70,10 +77,11 @@ public class Entity : MonoBehaviour
         }
     }
 
-    protected void Attack()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        // ATTACK
+        if (collision.collider.tag == "Bullet")
+        {
+            Damage(10); //!!!!!!!!!
+        }
     }
-
-
 }

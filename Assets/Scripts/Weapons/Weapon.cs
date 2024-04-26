@@ -2,18 +2,26 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("Настройки оружия")]
+    [SerializeField] private Camera _cam;
     [SerializeField] private GameObject _ammo;
     [SerializeField] private Transform _transform;
-    [SerializeField] private Transform _weaponPivot;
-    [SerializeField] private float bulletForce = 20f;
-    [SerializeField] private Camera _cam;
-    [SerializeField] private int _clipCapacity = 30;
+    [SerializeField] private Transform _weaponPivot; //Точка с которой стреляет оружие
+    [SerializeField] private float _bulletForce = 20f; //Скорость полёта пули
+    [SerializeField] private int _clipCapacity = 30; //Обьём обоймы
+
+    [Header("Настройки темпа стрельбы")]
     [SerializeField] private float _burstDelay = 0.5f;
-    private int _ammoInClip;
     [SerializeField] private float _burstTimer = 0f;
+
+
+    [SerializeField] private Hero _hero;
+    private int _ammoInClip;
+
     private System.Random rand = new System.Random();
-    private FireMode _fireMode;
-    private enum FireMode
+    
+    private FireMode _fireMode = FireMode.burst;
+    protected enum FireMode
     {
         single,
         burst
@@ -30,7 +38,7 @@ public class Weapon : MonoBehaviour
         _burstTimer -= 0.1f;
 
         RotateAroundHero();
-        if (_ammoInClip > 0 && _burstTimer <= 0)
+        if (_ammoInClip > 0 && _burstTimer <= 0 && _hero.GunMode)  
         {
             if (_fireMode == FireMode.single && Input.GetButtonDown("Fire1"))
             {
@@ -41,6 +49,7 @@ public class Weapon : MonoBehaviour
                 Fire();
             }
         }
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             Reload();
@@ -55,9 +64,9 @@ public class Weapon : MonoBehaviour
     {
         _burstTimer = _burstDelay;
         _ammoInClip -= 1;
-        var bullet = Instantiate(_ammo, _transform.position, _transform.rotation);
+        var bullet = Instantiate(_ammo, _transform.position, _transform.rotation );
         var rb = bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(_transform.up * (bulletForce + rand.Next(0, 10)), ForceMode2D.Impulse); ;
+        rb.AddForce(_transform.up * (_bulletForce + rand.Next(0, 10)), ForceMode2D.Impulse);
         Destroy(bullet, 4f);
     }
 
@@ -71,7 +80,6 @@ public class Weapon : MonoBehaviour
             case FireMode.burst:
                 _fireMode = FireMode.single;
                 break;
-
         }
     }
 

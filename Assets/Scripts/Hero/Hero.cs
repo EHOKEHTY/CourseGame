@@ -3,22 +3,20 @@ using UnityEngine;
 
 public class Hero : Entity
 {
+    [SerializeField] public bool GunMode { get; private set; } = false;
     [Header("Hero Settings")]
-    [SerializeField] private bool _gunMode = false;
     [SerializeField] private float _animSpeed = 1f;
     [SerializeField] private float _staminaSpendingSpeed = 1f;
     [SerializeField] private float _staminaRestoreSpeed = 1f;
     [SerializeField] private HeroBar _bar;
 
+    internal bool Walk_Up = false;
+    internal bool Walk_Down = false;
+    internal bool Walk_Left = false;
+    internal bool Walk_Right = false;
 
-
-    private Animator _anim;
 
     private Vector3 _moveTo;
-    void Start()
-    {
-        _anim = FindAnyObjectByType<Animator>();
-    }
 
     void Update()
     {
@@ -48,21 +46,21 @@ public class Hero : Entity
     );
         HeroMove();
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1)) // отдышка, когда закончилась стамина. 
         {
-            _gunMode = !_gunMode;
-            _anim.SetBool("GunMode", _gunMode);
-            if (_gunMode)
+            GunMode = !GunMode;
+            //_anim.SetBool("GunMode", GunMode);
+            if (GunMode)
             {
-                _animSpeed -= 0.1f;
-                _anim.speed = _anim.speed;
+                //_animSpeed -= 0.1f;
+                //_anim.speed = _anim.speed;
             }
             else
             {
-                _animSpeed += 0.1f;
-                _anim.speed = _anim.speed;
-                _anim.SetFloat("LookHorizontal", 0);
-                _anim.SetFloat("LookVertical", 0);
+                //_animSpeed += 0.1f;
+                //_anim.speed = _anim.speed;
+                //_anim.SetFloat("LookHorizontal", 0);
+                //_anim.SetFloat("LookVertical", 0);
             }
         }
     }
@@ -70,45 +68,9 @@ public class Hero : Entity
     private void FixedUpdate()
     {
 
-        if (_gunMode)
+        if (GunMode)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Vector3 direction = mousePosition - transform.position;
-
-            float angle = Vector3.Angle(Vector3.up, direction);
-
-            Vector3 cross = Vector3.Cross(Vector3.up, direction);
-            if (cross.z < 0)
-            {
-                angle = 360 - angle;
-            }
-
-            if (angle >= 315 || angle < 45)
-            {
-                _anim.SetFloat("LookVertical", 1);
-
-                _anim.SetFloat("LookHorizontal", 0);
-            }
-            else if (angle >= 45 && angle < 135)
-            {
-                _anim.SetFloat("LookHorizontal", -1);
-
-                _anim.SetFloat("LookVertical", 0);
-            }
-            else if (angle >= 135 && angle < 225)
-            {
-                _anim.SetFloat("LookVertical", -1);
-
-                _anim.SetFloat("LookHorizontal", 0);
-            }
-            else
-            {
-
-                _anim.SetFloat("LookHorizontal", 1);
-
-                _anim.SetFloat("LookVertical", 0);
-            }
+            
         }
 
         if (Input.GetAxisRaw("Debug Multiplier") > 0 && (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0))
@@ -123,36 +85,25 @@ public class Hero : Entity
 
     private void HeroMove()
     {
-        if (_gunMode)
+        if (GunMode)
         {
-            _anim.SetFloat("HorizontalMove", Input.GetAxisRaw("Horizontal"));
-            _anim.SetFloat("VerticalMove", Input.GetAxisRaw("Vertical"));
-
-            if (Input.GetAxisRaw("Debug Multiplier") > 0) //Если нажат shift, бежим
+            if (Input.GetAxisRaw("Debug Multiplier") > 0 && Stamina > 0) //Если нажат shift, бежим
             {
-                //_anim.speed = -_animSpeed * 1.5f;
-                Stamina -= _staminaSpendingSpeed;
                 base.Run(_moveTo);
             }
             else
             {
-                //_anim.speed = -_animSpeed;
                 base.Walk(_moveTo);
             }
         }
         else
         {
-            _anim.SetFloat("HorizontalMove", Input.GetAxisRaw("Horizontal"));
-            _anim.SetFloat("VerticalMove", Input.GetAxisRaw("Vertical"));
-
             if (Input.GetAxisRaw("Debug Multiplier") > 0 && Stamina > 0) //Если нажат shift, бежим
             {
-                _anim.speed = _animSpeed * 1.5f;
                 base.Run(_moveTo);
             }
             else
             {
-                _anim.speed = _animSpeed;
                 base.Walk(_moveTo);
             }
         }
